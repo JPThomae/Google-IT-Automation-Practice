@@ -40,5 +40,51 @@ print(result.stdout.decode())
 
 # https://docs.python.org/3/library/subprocess.html
 
+# logfile = sys.arg[1]
+# when you call the script from cmd, the logfile will be the arg passed
+# ./script.py logfile.txt
+
+# Useful when counting occurances of things
+dictionary = {"farts": 3}
+print(dictionary["farts"])
+dictionary["farts"] = dictionary.get('farts', 0) + 1
+print(dictionary["farts"])
+
+#### all function ####
+# Checks if all items in a list are True
+myylist = [True, True, True]
+x = all(myylist)
+print(x)
 
 
+
+# Week 4 Excersice script
+
+#!/usr/bin/env python3
+import sys
+import os
+import re
+
+# def error_search(log_file):
+  error = input("What is the error? ")
+  returned_errors = []
+  with open(log_file, mode='r',encoding='UTF-8') as file:
+    for log in  file.readlines():
+      error_patterns = ["error"]
+      for i in range(len(error.split(' '))):
+        error_patterns.append(r"{}".format(error.split(' ')[i].lower()))
+      if all(re.search(error_pattern, log.lower()) for error_pattern in error_patterns):
+        returned_errors.append(log)
+    file.close()
+  return returned_errors
+  
+# def file_output(returned_errors):
+  with open(os.path.expanduser('~') + '/data/errors_found.log', 'w') as file:
+    for error in returned_errors:
+      file.write(error)
+    file.close()
+# if __name__ == "__main__":
+  log_file = sys.argv[1]
+  returned_errors = error_search(log_file)
+  file_output(returned_errors)
+  sys.exit(0)
