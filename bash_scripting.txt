@@ -1,0 +1,96 @@
+Being able to script in bash is a great compliment to Python.
+
+Basic Linux Commands (All come from UNIX):
+echo - Used to print to screen
+cat - Used to read contents of files
+chmod - Used to change file permissions
+pwd - Used to print the current working directory
+cp - used to copy files
+.. - Used to reference the parent directory
+. - Used to reference the current directory
+touch - Used to create a new file
+ls -l - Used to show files
+ls -la - Used to show files and hidden files
+mv - Used to rename or move a file
+man - Used to find documentation
+> - Used to redirect output of a command. File is overwritten when used
+./stdout_example.py > new_file.txt
+le - Less than or equal to
+ge - Greater than or equal to
+basename - "basename index.HTM .HTM" will return -> index
+# cut [options] [file]
+# For delimiter separated fields, the - d option is used. The -f option specifies the field, a set of fields, or a range of fields to be extracted.
+# cut -d [delimiter] -f [field number]
+cut - Allows you to take a portion of each line using a bit delimiter
+# grep [pattern] [file-location]
+grep - global regular expression print
+
+>> - Used to append output of a command to a file
+< - Instead of sending data to a file we can can use this to send it
+2> - Used to redirect error messages to files
+| - Used to connect the output of one program to the input of another
+
+
+# Bash has 3 types of conditionals. For, While, Until
+
+# While loops in bash
+# Example
+n=1
+while [ $n -le 5 ]; do
+    echo "Iteration number $n"
+    ((n+=1))
+done
+
+# $1 is used to access the first command line argument
+n=0
+command=$1
+while ! $command && [ $n -le 5 ]; do
+    sleep $n
+    ((n=n+1))
+    echo "Retry #$n"
+done
+
+
+# For loops in bash
+# Example
+for fruit in peach orange apple;do
+    echo "I like $fruit!"
+done
+
+
+# Processing all files ending in log and cutting the most frequent errors
+for logfile in /var/log/*log; do
+    echo "Processing: $logfile"
+    cut -d' ' -f5- $logfile | sort | uniq -c | sort -nr | head -5
+done
+
+# python subprocess module tips
+import subprocess
+subprocess.run("mv", old_name, new_name)
+
+
+### Bash Lab
+
+# Python
+#!/usr/bin/env python3
+import sys
+import subprocess
+f = open(sys.argv[1], "r")
+
+for line in f.readlines():
+ old_name = line.strip()
+ new_name = old_name.replace("jane", "jdoe")
+ subprocess.run(["mv", old_name, new_name])
+f.close()
+
+# Bash
+#/usr/bin/env bash
+
+> oldFiles.txt
+
+files=$(grep " jane " ../data/list.txt | cut -d' ' -f 3)
+        for i in $files; do
+                if test -e $HOME$i; then echo $HOME$i>>oldFiles.txt; fi
+done
+
+
